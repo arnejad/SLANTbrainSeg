@@ -2,18 +2,18 @@ import torch
 import torch.nn as nn
 
 class UNet3D(nn.Module):
-    def __init__(self, in_channel, n_classes):
+    def __init__(self, in_channel, n_classes, useBN=True):
         self.in_channel = in_channel
         self.n_classes = n_classes
         super(UNet3D, self).__init__()
-        self.ec0 = self.encoder(self.in_channel, 32, bias=True, batchnorm=True)
-        self.ec1 = self.encoder(32, 64, bias=True, batchnorm=True)
-        self.ec2 = self.encoder(64, 64, bias=True, batchnorm=True)
-        self.ec3 = self.encoder(64, 128, bias=True, batchnorm=True)
-        self.ec4 = self.encoder(128, 128, bias=True, batchnorm=True)
-        self.ec5 = self.encoder(128, 256, bias=True, batchnorm=True)
-        self.ec6 = self.encoder(256, 256, bias=True, batchnorm=True)
-        self.ec7 = self.encoder(256, 512, bias=True, batchnorm=True)
+        self.ec0 = self.encoder(self.in_channel, 32, bias=True, batchnorm=useBN)
+        self.ec1 = self.encoder(32, 64, bias=True, batchnorm=useBN)
+        self.ec2 = self.encoder(64, 64, bias=True, batchnorm=useBN)
+        self.ec3 = self.encoder(64, 128, bias=True, batchnorm=useBN)
+        self.ec4 = self.encoder(128, 128, bias=True, batchnorm=useBN)
+        self.ec5 = self.encoder(128, 256, bias=True, batchnorm=useBN)
+        self.ec6 = self.encoder(256, 256, bias=True, batchnorm=useBN)
+        self.ec7 = self.encoder(256, 512, bias=True, batchnorm=useBN)
 
         self.pool0 = nn.MaxPool3d(2)
         self.pool1 = nn.MaxPool3d(2)
@@ -36,7 +36,7 @@ class UNet3D(nn.Module):
         if batchnorm:
             layer = nn.Sequential(
                 nn.Conv3d(in_channels, out_channels, kernel_size, stride=stride, padding=padding, bias=bias),
-                nn.BatchNorm2d(out_channels),
+                nn.BatchNorm3d(out_channels), #check this
                 nn.ReLU())
         else:
             layer = nn.Sequential(
@@ -54,7 +54,9 @@ class UNet3D(nn.Module):
         return layer
 
     def forward(self, x):
+        print(x.size())
         e0 = self.ec0(x)
+        print(e0.size())
         syn0 = self.ec1(e0)
         e1 = self.pool0(syn0)
         e2 = self.ec2(e1)

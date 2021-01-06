@@ -4,6 +4,8 @@ import os
 import argparse
 import torchsrc
 
+# print(torch.version.cuda)
+
 def mkdir(path):
     if not os.path.exists(path):
         os.makedirs(path)

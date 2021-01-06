@@ -181,7 +181,8 @@ class Trainer(object):
             if self.cuda:
                 data, target = data.cuda(), target.cuda()
             data, target = Variable(data,volatile=True), Variable(target,volatile=True)
-
+            # data = torch.squeeze(data, dim=1)
+            print(data.size())
             pred = self.model(data)
 
             lbl_pred = pred.data.max(1)[1].cpu().numpy()[:,:, :].astype('uint8')
@@ -262,7 +263,7 @@ class Trainer(object):
 
             model_pth = '%s/model_epoch_%04d.pth' % (out, epoch)
 
-            if self.finetune and epoch==0:
+            if self.finetune:
                 old_out = out.replace('finetune_out','test_out')
                 old_model_pth = '%s/model_epoch_%04d.pth' % (old_out, self.fineepoch)
                 self.model.load_state_dict(torch.load(old_model_pth))
