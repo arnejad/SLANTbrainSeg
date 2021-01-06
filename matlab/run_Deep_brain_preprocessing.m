@@ -1,16 +1,16 @@
 clc;clear;close all;
 
 % test on local machine
-% extra_dir = '/share4/xiongy2/docker/extra';
-% mdir = '/share4/xiongy2/McHugo/output_test'; 
-% target_dir = '/share4/xiongy2/McHugo/input_test'; 
-% python_cmd = 'python';
+extra_dir = '~/SLANT_data/extra';
+mdir = '~/SLANT_data/output_test'; 
+target_dir = '~/SLANT_data/input_test'; 
+python_cmd = 'python';
 
 % run on docker
-extra_dir = '/extra';
-mdir = '/OUTPUTS'; 
-target_dir = '/INPUTS'; 
-python_cmd = '/pythondir/miniconda/bin/python';
+% extra_dir = '/extra';
+% mdir = '/OUTPUTS'; 
+% target_dir = '/INPUTS'; 
+% python_cmd = '/pythondir/miniconda/bin/python';
 
 % set up locations
 in.atlas_loc = [extra_dir filesep 'full-multi-atlas' filesep 'atlas-processing' filesep];

@@ -104,7 +104,7 @@ if ~exist(mdir, 'dir'), mkdir(mdir); end
 target_bname = get_basename(target_fname);
 out_dir = [mdir, '/', target_bname, '/'];
 if ~exist(out_dir, 'dir'), mkdir(out_dir); end
-tmp_dir = [out_dir, '/temp-out/'];
+tmp_dir = [out_dir, 'temp-out/'];
 if ~exist(tmp_dir, 'dir'), mkdir(tmp_dir); end
 
 tprintf('%s\n', repmat('*', [1 60]));
@@ -162,7 +162,7 @@ function [res_fname aff_fname inv_fname] = rigidMNI(target_fname, out_dir, opts)
     % set some directories / filenames
     reg_dir = [out_dir, 'MNI-registration/'];
     if ~exist(reg_dir, 'dir'), mkdir(reg_dir); end
-    tmp_dir = [out_dir, '/temp-out/'];
+    tmp_dir = [out_dir, 'temp-out/'];
     if ~exist(tmp_dir, 'dir'), mkdir(tmp_dir); end
     txt_out = [tmp_dir, 'MNI-registration.txt'];
     res_fname = sprintf('%starget_MNI.nii.gz', reg_dir);
@@ -178,7 +178,7 @@ function [res_fname aff_fname inv_fname] = rigidMNI(target_fname, out_dir, opts)
     if ~exist(res_fname) || ~exist(aff_fname)
 
         % run the registration
-        aladin_cmd = sprintf(['%s/reg_aladin -ref %s -flo %s -aff %s ', ...
+        aladin_cmd = sprintf(['%sreg_aladin -ref %s -flo %s -aff %s ', ...
                               '-res %s -rmask %s >> %s 2>&1\n'], ...
                               opts.loc, opts.fname, target_fname, ...
                               aff_fname, res_fname, opts.msk_fname, txt_out);
@@ -186,7 +186,7 @@ function [res_fname aff_fname inv_fname] = rigidMNI(target_fname, out_dir, opts)
 
 
         % try and fix any obvious problems with the nifty file
-        target_nii = load_untouch_nii_gz(res_fname);
+         target_nii = load_untouch_nii_gz(res_fname);
         target_nii.img = single(target_nii.img) * ...
                          target_nii.hdr.dime.scl_slope + ...
                          target_nii.hdr.dime.scl_inter;
